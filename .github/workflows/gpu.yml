@@ -1,7 +1,7 @@
 name: "build, test gpu"
 
 on:
-  push:
+  workflow_dispatch:
     branches:
     - develop
 jobs:
