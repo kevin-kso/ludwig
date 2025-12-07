@@ -25,25 +25,24 @@ jobs:
         run: sudo apt list --installed | grep -i nvidia
       - name: "nvidiq-smi .... "
         run: nvidia-smi
-      - name: "nvcc .... "
-        run: nvcc --version
       - name: "Install cuda-toolkit ... "
-        run: sudo apt-get install -y cuda-toolkit-13-1
+        run: sudo apt-get install -y cuda-toolkit-12-8
       - name: "Check: "
         run: ls -l /usr/local
       - name: Set compilation
         run: |
-          export PATH=/usr/local/cuda-13.1/bin:${PATH}
-          export LD_LIBRARY_PATH=/usr/local/cuda-13.1/lib64:${LD_LIBRARY_PATH}
+          export PATH=/usr/local/cuda-12.8/bin:${PATH}
+          export LD_LIBRARY_PATH=/usr/local/cuda-12.8/lib64:${LD_LIBRARY_PATH}
           ls -l /opt
+          ls -l /opt/nvidia
           which nvcc
           nvcc --version
       - name: Checkout repository
         uses: actions/checkout@v4
       - name: Compile
         run: |
-          export PATH=/usr/local/cuda-13.1/bin:${PATH}
-          export LD_LIBRARY_PATH=/usr/local/cuda-13.1/lib64:${LD_LIBRARY_PATH}
+          export PATH=/usr/local/cuda-12.8/bin:${PATH}
+          export LD_LIBRARY_PATH=/usr/local/cuda-12.8/lib64:${LD_LIBRARY_PATH}
           cp config/github-gpu.mk config.mk
           make serial
           make -j 4
