@@ -46,5 +46,9 @@ jobs:
           cp config/github-gpu.mk config.mk
           make serial
           make -j 8
-          make test
+      - name: Test
+        run: |
+          export PATH=/usr/local/cuda-12.8/bin:${PATH}
+          export LD_LIBRARY_PATH=/usr/local/cuda-12.8/lib64:${LD_LIBRARY_PATH}
+          make unit
 
