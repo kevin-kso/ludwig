@@ -1,0 +1,47 @@
+name: "build, test gpu"
+
+on:
+  workflow_dispatch:
+    branches:
+    - develop
+
+jobs:
+  build:
+    runs-on: nvidia
+    steps:
+      - name: Pre-installation actions
+        run: |
+          lspci | grep -i nvidia    # Verify GPU is available
+          hostnamectl               # Linux
+          gcc --version             # gcc version
+      - name: Check for no existing CUDA
+        run: |
+          ls -l /usr/local          # check no exsiting /usr/local/cuda-X.Y
+          which wget
+      - name: "Preparation: download network installer"
+        run: |
+          wget https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2404/x86_64/cuda-keyring_1.1-1_all.deb
+          sudo dpkg -i cuda-keyring_1.1-1_all.deb
+      - name: "Install CUDA toolkit"
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y nvidia-open
+          sudo apt-get -y install cuda-toolkit-13-0
+          ls -l /usr/local
+      - name: Set compilation
+        run: |
+          export PATH=/usr/local/cuda-13.0/bin:${PATH}
+          export LD_LIBRARY_PATH=/usr/local/cuda-13.0/lib64:${LD_LIBRARY_PATH}
+          ls -l /opt
+          which nvcc
+          nvcc --version
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Compile
+        run: |
+          export PATH=/usr/local/cuda-13.0/bin:${PATH}
+          export LD_LIBRARY_PATH=/usr/local/cuda-13.0/lib64:${LD_LIBRARY_PATH}
+          cp config/github-gpu.mk config.mk
+	  make serial
+	  make
+
