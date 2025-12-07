@@ -1,7 +1,9 @@
 name: "build, test gpu"
 
 on:
-  workflow_dispatch:
+  push:
+    branches
+    - develop
 jobs:
   build:
     runs-on: nvidia
