@@ -42,5 +42,6 @@ jobs:
           export LD_LIBRARY_PATH=/usr/local/cuda-13.1/lib64:${LD_LIBRARY_PATH}
           cp config/github-gpu.mk config.mk
           make serial
-          make
+          make -j 4
+          make unit
 
