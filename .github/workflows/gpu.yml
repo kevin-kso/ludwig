@@ -38,7 +38,7 @@ jobs:
           which nvcc
           nvcc --version
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
       - name: Compile
         run: |
           export PATH=/usr/local/cuda-12.8/bin:${PATH}
